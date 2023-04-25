@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo michi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <h1>Michi de consejero 😸😸</h1>
+    </header>
+    <section>
+        <div>
+            <figure>
+                <img id="image"
+                    src="https://images.pexels.com/photos/1643457/pexels-photo-1643457.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                    alt="michi feli">
+            </figure>
+            <p>Soy tu michi de confianza estoy aquí para darte ánimos y que sigas dándole con todo wee</p>
+            <button onclick="isToastVisible('visible')">Pedir aiuda</button>
+        </div>
+    </section>
+    <footer>
+        <div id="toast">
+            <div id="emoji">🌷</div>
+            <p id="phrase">"Florecer exige pasar por todas las estaciones"</p>
+            <button onclick="setPhraseAndCloseToast()"></button>
+        </div>
+    </footer>
+    <div>
+        <span id="credit"">Hecho con el ❤ por Jorge Garzón - Diseñador Web</span>
+    </div>
+</body>
+
+<script>
+    const toast = document.getElementById('toast')
+    const emoji = document.getElementById('emoji')
+    const phrase = document.getElementById('phrase')
+    const image = document.getElementById('image')
+    const BASE_API = 'https://api.thecatapi.com/v1/images/search'
+
+    const phrases = [
+        {
+            emoji: '🌷',
+            phrase: '"Florecer exige pasar por todas las estaciones"'
+        },
+        {
+            emoji: '😘',
+            phrase: '"No culpes a una versión más pequeña de ti por no saber antes lo que sabes ahora"'
+        },
+        {
+            emoji: '💪',
+            phrase: '"Si crees que puedes, ya estás a medio camino"'
+        },
+        {
+            emoji: '🥇',
+            phrase: '"Nunca te rindas, lo bueno está por llegar"'
+        },
+        {
+            emoji: '💕',
+            phrase: '"En el verdadero amor no manda nadie; obedecen los dos"'
+        },
+        {
+            emoji: '🙌',
+            phrase: '"Hazlo ahora. A veces el “después” no llega nunca"'
+        },
+        {
+            emoji: '🚪',
+            phrase: '"Pide y se te dará; busca y encontrarás; llama y la puerta se abrirá"'
+        },
+        {
+            emoji: '🚀',
+            phrase: '"Ve a por el ahora. El futuro no está asegurado para nadie"'
+        }
+    ]
+
+    const getRandomInt = (max) => {
+        return Math.floor(Math.random() * Math.floor(max));
+    };
+
+    const getRandomPhrase = () => {
+        const randomNumber = getRandomInt(phrases.length);
+        emoji.innerHTML = phrases[randomNumber].emoji;
+        phrase.innerHTML = phrases[randomNumber].phrase;
+    };
+
+    const getRandomMichi = async () => {
+        const response = await fetch(`${BASE_API}`);
+        const michi = await response.json();
+        const randomMichi = getRandomInt(100000); // agregar número aleatorio para evitar caché
+        image.src = `${michi[0].url}?${randomMichi}`;
+    };
+
+    const setNewPhrase = () => {
+        const randomNumber = Math.floor(Math.random() * phrases.length) // Obtener un número aleatorio dentro del rango de la matriz phrases
+        emoji.innerHTML = phrases[randomNumber].emoji
+        phrase.innerHTML = phrases[randomNumber].phrase
+    }
+
+    const setPhraseAndCloseToast = () => {
+        isToastVisible('hidden')
+        setNewMichi()
+        setNewPhrase() // Agregar llamada a la función setNewPhrase() para cambiar la frase
+    }
+
+    const setNewMichi = async () => {
+        const response = await fetch(BASE_API)
+        const michi = await response.json()
+        image.src = michi[0].url
+    }
+
+    const isToastVisible = (value) => toast.style.visibility = value
+
+</script>
+
+</html>
